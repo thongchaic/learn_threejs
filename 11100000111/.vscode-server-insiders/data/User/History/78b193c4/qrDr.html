@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+                background: rgb(0, 0, 0);
+            }
+        </style>
+        <!-- Three.JS -->
+        <script
+            async
+            src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+        ></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/",
+                    "stats": "./build/stats.module.js"
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+      <script type="module">
+        import * as THREE from "three";
+        import Stats from "stats";
+
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,W/H,1,5000
+        );
+        const renderer = new THREE.WebGLRenderer({
+          antialias: true
+        });
+        renderer.setSize(W,H);
+        renderer.setClearColor(0xFFFFFF);
+        renderer.shadowMap= true;
+        renderer.shadowMap.type = THREE.PCFSoftshadowMap;
+
+        document.body.appendChild(renderer.domElement);
+
+        let clock = new THREE.Clock();
+        let date = Date.now();
+
+        camera.position.set(0,150,500);
+        camera.lookAt(scene.position);
+
+        const stats = new Stats();
+        stats.showPanel(0);
+        document.body.appendChild(stats.dom);
+
+        const debug = document.createElement("div");
+        debug.style.position="absolute";
+        debug.style.left="100px";
+        debug.style.top="0px";
+        debug.style.width="500";
+        debug.style.height="30px";
+        debug.style.fontSize="16px";
+        debug.style.color="white";
+        debug.innerHTML ="debug";
+        document.body.appendChild(debug);
+
+        // Add your code here!!!
+
+        function render(){ // Game Loop
+          requestAnimationFrame(render);
+          stats.begin();
+          // code...
+          stats.end();
+          renderer.render(scene,camera);
+        }
+
+        render();
+
+      </script>
+    </body>
+</html>
